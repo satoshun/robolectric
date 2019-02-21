@@ -85,6 +85,19 @@ public class ShadowPowerManagerTest {
   }
 
   @Test
+  public void newWakeLock_shouldSetWakeLockTag() throws Exception {
+    PowerManager.WakeLock wakeLock = powerManager.newWakeLock(0, "FOO");
+    assertThat(shadowOf(wakeLock).getTag()).isEqualTo("FOO");
+  }
+
+  @Test
+  public void setTag_shouldSetWakeLockTag() throws Exception {
+    PowerManager.WakeLock wakeLock = powerManager.newWakeLock(0, "FOO");
+    shadowOf(wakeLock).setTag("BAR");
+    assertThat(shadowOf(wakeLock).getTag()).isEqualTo("BAR");
+  }
+
+  @Test
   public void newWakeLock_shouldAcquireAndReleaseNonReferenceCountedLock() throws Exception {
     PowerManager.WakeLock lock = powerManager.newWakeLock(0, "TAG");
     lock.setReferenceCounted(false);
