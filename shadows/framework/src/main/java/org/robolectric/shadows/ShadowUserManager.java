@@ -48,6 +48,7 @@ public class ShadowUserManager {
   public static final int FLAG_GUEST = UserInfo.FLAG_GUEST;
   public static final int FLAG_RESTRICTED = UserInfo.FLAG_RESTRICTED;
 
+  private static boolean isMultiUserSupported = false;
   private static Map<Integer, Integer> userPidMap = new HashMap<>();
 
   @RealObject private UserManager realObject;
@@ -471,6 +472,23 @@ public class ShadowUserManager {
   protected boolean removeUser(int userHandle) {
     userInfoMap.remove(userHandle);
     return true;
+  }
+
+  /**
+   * Returns {@code false} by default, or the value specified via {@link
+   * #setSupportsMultipleUsers(boolean)}.
+   */
+  @Implementation(minSdk = N)
+  public static boolean supportsMultipleUsers() {
+    return isMultiUserSupported;
+  }
+
+  /**
+   * Sets whether multiple users are supported; controls the return value of {@link
+   * UserManager#supportsMultipleUser}.
+   */
+  public void setSupportsMultipleUsers(boolean isMultiUserSupported) {
+    this.isMultiUserSupported = isMultiUserSupported;
   }
 
   /**
